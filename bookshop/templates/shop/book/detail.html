@@ -1,0 +1,42 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}
+    {{ book.title }}
+{% endblock %}
+
+{% block content %}
+<div class="book-detail">
+    <div class="img">
+        <img src="{% if book.image %}{{ book.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" alt="{{ book.title }}">
+    </div>
+    <h1>{{ book.title }}</h1>
+    <h2>
+        <a href="{{ book.genre.get_absolute_url }}">
+            {{ book.genre.name }}
+        </a>
+    </h2>
+    <p><strong>Автор:</strong> {{ book.author.name }}</p>
+    <p><strong>Жанры:</strong>
+    {% for genre in book.genres.all %}
+        <a href="{{ genre.get_absolute_url }}">
+            {{ genre.name }}
+        </a>{% if not forloop.last %}, {% endif %}
+    {% endfor %}
+    </p>
+    <p class="price">{{ book.price }} руб.</p>
+
+    <form action="{% url 'cart:cart_add' book.id %}" method="post">
+    {% csrf_token %}
+    <label for="{{ cart_book_form.quantity.id_for_label }}">Количество:</label>
+    {{ cart_book_form.quantity }}
+    <input type="submit" value="Добавить в корзину">
+    </form>
+
+    <div class="description">
+        {{ book.description|linebreaks }}
+    </div>
+
+    <p><strong>Кол-во страниц:</strong> {{ book.pages }}</p>
+</div>
+{% endblock %}

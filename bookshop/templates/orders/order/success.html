@@ -1,0 +1,25 @@
+{% extends "shop/base.html" %}
+
+{% block title %}
+Success
+{% endblock %}
+
+{% block content %}
+<h1>Чек</h1>
+
+<p><strong>Способ оплаты:</strong> {{ payment_method }}</p>
+
+<p><strong>Список книг:</strong></p>
+<ul>
+    {% for item in order_items %}
+    <li>{{ item.book.title }} — {{ item.quantity }} x {{ item.price }} руб.</li>
+    {% endfor %}
+</ul>
+
+<p><strong>Итоговая стоимость:</strong> {{ total_cost }} руб.</p>
+
+<p><strong>Дата и время заказа:</strong> {{ order_time }}</p>
+<p><strong>Город:</strong> {{ order_city }}</p>
+<p><strong>Транспортная компания:</strong> {{ transport_company }}</p>
+
+{% endblock %}

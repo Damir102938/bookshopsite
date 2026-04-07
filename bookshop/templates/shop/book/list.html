@@ -1,0 +1,52 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}
+{% if genre %}{{ genre.name }}{% else %}Все книги{% endif %}
+{% endblock %}
+
+{% block content %}
+<div id="sidebar">
+    <h1>Жанры</h1>
+    <ul>
+        <li {% if not selected_genre %}class="selected"{% endif %}>
+            <a href="{% url 'shop:book_list' %}">Все жанры</a>
+        </li>
+        {% for g in genres %}
+        <li {% if selected_genre  and selected_genre.slug == g.slug %}class="selected"{% endif %}>
+            <a href="{{ g.get_absolute_url }}">{{ g.name }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div id="main" class="book-list">
+    <h1>{% if selected_genre %}Книги в жанре {{ selected_genre.name }}{% else %}Все книги{% endif %}</h1>
+
+    {% for book in books %}
+    <div class="item">
+        <a href="{{ book.get_absolute_url }}">
+            <img src="{% if book.image %}{{ book.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" alt="{{ book.title }}">
+        </a>
+        <p><strong>Название:</strong> 
+        <a href="{{ book.get_absolute_url }}">
+        {{ book.title|slice:":15" }}{% if book.title|length > 15 %}...{% endif %}
+        </a>
+        </p>
+        <p><strong>Автор:</strong> 
+            <a href="{% url 'shop:book_list_by_author' book.author.id %}">{{ book.author.name }}</a>
+        </p>
+        <p><strong>Жанры:</strong>
+        {% for genre in book.genres.all %}
+        <a href="{{ genre.get_absolute_url }}">
+            {{ genre.name }}
+        </a>{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+        </p>
+        <p class="price">{{ book.price }} руб.</p>
+    </div>
+    {% empty %}
+    <p>Нет доступных книг.</p>
+    {% endfor %}
+</div>
+{% endblock %}

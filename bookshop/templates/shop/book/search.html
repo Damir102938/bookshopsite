@@ -1,0 +1,41 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}
+Поиск
+{% endblock %}
+
+{% block content %}
+<h1>Результаты поиска</h1>
+
+{% if query %}
+    <p>Вы искали: "<strong>{{ query }}</strong>"</p>
+{% endif %}
+
+<div class="book-list">
+    {% for book in books %}
+    <div class="item">
+        <a href="{{ book.get_absolute_url }}">
+            <img src="{% if book.image %}{{ book.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" alt="{{ book.title }}">
+        </a>
+        <p><strong>Название:</strong> 
+        <a href="{{ book.get_absolute_url }}">
+        {{ book.title|slice:":15" }}{% if book.title|length > 15 %}...{% endif %}
+        </a>
+        <p><strong>Автор:</strong> 
+            <a href="{% url 'shop:book_list_by_author' book.author.id %}">{{ book.author.name }}</a>
+        </p>
+        <p><strong>Жанры:</strong>
+        {% for genre in book.genres.all %}
+        <a href="{{ genre.get_absolute_url }}">
+            {{ genre.name }}
+        </a>{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+        </p>
+        <p class="price">{{ book.price }} руб.</p>
+    </div>
+    {% empty %}
+    <p>Ничего не найдено.</p>
+    {% endfor %}
+</div>
+{% endblock %}

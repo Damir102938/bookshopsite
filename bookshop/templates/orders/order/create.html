@@ -1,0 +1,34 @@
+{% extends "shop/base.html" %}
+
+{% block title %}
+Оформление заказа
+{% endblock %}
+
+{% block content %}
+<h1>Оформление заказа</h1>
+
+<div class="order-info">
+    <h3>Ваш заказ</h3>
+    <ul>
+        {% for item in cart %}
+        <li>
+            {{ item.quantity }}x {{ item.book.title }}
+            <span>{{ item.total_price }} руб.</span>
+        </li>
+        {% endfor %}
+    </ul>
+    <p>Итого: {{ cart.get_total_price }} руб.</p>
+</div>
+
+<form method="post" class="order-form">
+    {% csrf_token %}
+    
+    <p><strong>Город:</strong></p>
+    {{ form.city }}
+    
+    <p><strong>Способ оплаты:</strong></p>
+    {{ form.payment_method }}
+    
+    <p><input type="submit" value="Оформить заказ"></p>
+</form>
+{% endblock %}
