@@ -35,7 +35,7 @@ class Author(models.Model):
 
 
 class Book(models.Model):
-    """Модель для книги (ранее Product)."""
+    """Модель для книг."""
     genres = models.ManyToManyField(Genre, related_name='books')
     author = models.ForeignKey(Author, related_name='books',
                                on_delete=models.SET_NULL, null=True)

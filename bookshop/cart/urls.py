@@ -1,4 +1,4 @@
-"""URL конфигурации для приложения 'cart' (книги)."""
+"""URL конфигурации для приложения 'cart'."""
 
 from django.urls import path
 from . import views

@@ -1,5 +1,4 @@
-"""Модели приложения orders для магазина печатных книг."""
-
+"""Модели приложения orders."""
 from django.db import models
 from myShop.models import Book
 

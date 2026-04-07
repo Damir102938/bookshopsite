@@ -1,3 +1,4 @@
+"""Представления для приложения 'myShop'."""
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Genre, Book, Author
 from cart.forms import CartAddBookForm
@@ -16,17 +17,15 @@ def get_published_books():
 
 
 def book_search(request):
+    """Поиск книг по названию, автору или жанру."""
     query = request.GET.get('query', '').strip()
     if query:
-        # 1️⃣ Проверяем, есть ли жанр с таким названием (игнор регистра)
         try:
             genre = Genre.objects.get(name__iexact=query)
-            # если жанр найден, перенаправляем на его страницу
             return redirect(genre.get_absolute_url())
         except Genre.DoesNotExist:
             pass
 
-        # 2️⃣ Иначе ищем книги по названию или автору
         books = Book.objects.filter(
             Q(title__icontains=query) |
             Q(author__name__icontains=query)
@@ -41,6 +40,7 @@ def book_search(request):
 
 
 def book_list(request, genre_slug=None):
+    """Список книг, с возможностью фильтрации по жанру."""
     genres = Genre.objects.all()
     books = Book.objects.filter(available=True, hidden=False)
     selected_genre = None
@@ -81,7 +81,6 @@ def book_list_by_author(request, author_id):
                    'books': books})
 
 
-# Стандартные обработчики ошибок
 def csrf_failure(request, reason=''):
     """403 — CSRF ошибка."""
     return render(request, '403csrf.html', status=403)

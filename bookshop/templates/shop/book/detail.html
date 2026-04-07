@@ -16,7 +16,9 @@
             {{ book.genre.name }}
         </a>
     </h2>
-    <p><strong>Автор:</strong> {{ book.author.name }}</p>
+    <p><strong>Автор:</strong> 
+        <a href="{% url 'shop:book_list_by_author' book.author.id %}">{{ book.author.name }}</a>
+    </p>
     <p><strong>Жанры:</strong>
     {% for genre in book.genres.all %}
         <a href="{{ genre.get_absolute_url }}">

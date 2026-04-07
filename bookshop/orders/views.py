@@ -1,5 +1,4 @@
-"""Представления для приложения 'orders' в магазине книг."""
-
+"""Представления для приложения 'orders'."""
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from .models import OrderItem, Order
@@ -16,16 +15,13 @@ def order_create(request):
     if request.method == 'POST':
         form = OrderCreateForm(request.POST)
         if form.is_valid():
-            # Создаём заказ
             order = form.save(commit=False)
             order.payment_method = form.cleaned_data['payment_method']
 
-            # Общая стоимость заказа из корзины
             order.total_cost = sum(item['price'] * item['quantity']
                                    for item in cart)
             order.save()
 
-            # Создаём элементы заказа
             for item in cart:
                 OrderItem.objects.create(
                     order=order,
@@ -34,7 +30,6 @@ def order_create(request):
                     quantity=item['quantity']
                 )
 
-            # Очистка корзины и сохранение ID заказа в сессии
             cart.clear()
             request.session['order_id'] = order.id
             return redirect(reverse('orders:order_success'))

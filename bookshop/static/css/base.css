@@ -225,6 +225,10 @@ ul.errorlist {
     text-align:justify;
 }
 
+.book-detail .description {
+    font-size: 24px;
+}
+
 .book-detail .price {
     color:#333;
     font-size:28px;
