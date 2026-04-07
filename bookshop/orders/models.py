@@ -18,7 +18,7 @@ class CommonInfo(models.Model):
 
 
 class City(CommonInfo):
-    """Модель заказа."""
+    """Модель города."""
     name = models.CharField(max_length=100,
                             verbose_name="Название города", unique=True)
 
