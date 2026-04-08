@@ -4,7 +4,7 @@ from myShop.models import Book
 
 
 class Cart:
-    """Корзина для печатных книг."""
+    """Корзина книг."""
 
     def __init__(self, request):
         """Инициализировать корзину."""

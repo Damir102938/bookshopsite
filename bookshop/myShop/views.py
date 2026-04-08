@@ -7,7 +7,7 @@ from django.db.models import Q
 
 
 def get_published_books():
-    """Фильтрация книг, которые доступны и не скрыты."""
+    """Фильтрация книг."""
     current_time = now()
     return Book.objects.filter(
         available=True,
@@ -40,7 +40,7 @@ def book_search(request):
 
 
 def book_list(request, genre_slug=None):
-    """Список книг, с возможностью фильтрации по жанру."""
+    """Список книг."""
     genres = Genre.objects.all()
     books = Book.objects.filter(available=True, hidden=False)
     selected_genre = None
